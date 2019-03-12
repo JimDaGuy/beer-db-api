@@ -22,11 +22,8 @@ const router = app => {
 
     // Local variables from parameters
     const { name } = req.query;
-    const rpp = req.query.rpp || 5;
-    const page = req.query.page || 1;
-
-    // Create regex pattern for case-insensitive search of parameter
-    const regexPattern = new RegExp(`^${name}$`, "i");
+    const rpp = parseInt(req.query.rpp) || 5;
+    const page = parseInt(req.query.page) || 1;
 
     // Connect to database
     MongoClient.connect(dbURL, (err, database) => {
@@ -37,8 +34,8 @@ const router = app => {
       // Search recipes collections
       dbObject
         .collection("Recipes")
-        .find({ Name: { $regex: regexPattern } }, {})
-        .skip(rpp * page - 1)
+        .find({ Name: { $regex: name, $options: "-i" } }, {})
+        .skip(rpp * (page - 1))
         .limit(rpp)
         .toArray((err2, result) => {
           if (err2) throw err2;
