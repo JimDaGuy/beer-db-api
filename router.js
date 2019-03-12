@@ -1,6 +1,6 @@
 const mongo = require("mongodb");
 const MongoClient = mongo.MongoClient;
-const dbURL = process.env.MONGO_URI || "mongodb://localhost:27017";
+const dbURL = process.env.MONGODB_URI || "mongodb://localhost:27017";
 const dbName = process.env.DB_NAME || "BeerDB";
 const Grid = require("gridfs-stream");
 
