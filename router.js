@@ -45,18 +45,56 @@ const router = app => {
     });
   });
 
+  /*
+  image
+  - Return image of beer baed on the color parameter passed in
+  ==========================
+  Parameters:
+  color (Default: 0): Color number of the beer from its recipe
+  */
   app.get("/image", (req, res) => {
+    const color = parseInt(req.query.color) || 0;
+
     // Connect to database
     MongoClient.connect(dbURL, (err, database) => {
       if (err) throw err;
       // Get database object
       const dbObject = database.db(dbName);
-
       const gfs = Grid(dbObject, mongo);
-      const readStream = gfs.createReadStream({
-        filename: "10.jpg"
-      });
-      readStream.pipe(res);
+      let readStream;
+
+      switch (true) {
+        case color <= 10:
+          readStream = gfs.createReadStream({
+            filename: "10.jpg"
+          });
+          readStream.pipe(res);
+          break;
+        case color <= 20:
+          readStream = gfs.createReadStream({
+            filename: "20.jpg"
+          });
+          readStream.pipe(res);
+          break;
+        case color <= 30:
+          readStream = gfs.createReadStream({
+            filename: "30.jpg"
+          });
+          readStream.pipe(res);
+          break;
+        case color <= 40:
+          readStream = gfs.createReadStream({
+            filename: "40.jpg"
+          });
+          readStream.pipe(res);
+          break;
+        default:
+          readStream = gfs.createReadStream({
+            filename: "50.jpg"
+          });
+          readStream.pipe(res);
+          break;
+      }
     });
   });
 };
