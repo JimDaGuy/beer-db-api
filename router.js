@@ -31,10 +31,13 @@ const router = app => {
       // Get database object
       const dbObject = database.db(dbName);
 
+      // Create regex pattern
+      const regexString = `.\\b${name}.`;
+
       // Search recipes collections
       dbObject
         .collection("Recipes")
-        .find({ Name: { $regex: name, $options: "-i" } }, {})
+        .find({ Name: { $regex: regexString, $options: "i" } }, {})
         .skip(rpp * (page - 1))
         .limit(rpp)
         .toArray((err2, result) => {
